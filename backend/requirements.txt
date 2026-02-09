@@ -1,0 +1,23 @@
+# Web
+fastapi==0.110.0
+uvicorn[standard]==0.29.0
+python-multipart==0.0.9
+aiofiles==23.2.1
+httpx==0.24.1
+
+# AWS / Yandex Object Storage
+aioboto3==12.3.0
+
+# YDB
+ydb==3.11.0
+grpcio==1.62.1
+grpcio-tools==1.62.1
+
+# Security
+PyJWT==2.8.0
+cryptography==42.0.5
+
+# Utils
+requests==2.31.0
+python-dotenv==1.0.1
+apscheduler==3.10.4

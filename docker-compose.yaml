@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+
+  frontend:
+    build: ./frontend   # путь к Dockerfile фронтенда
+    container_name: frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - gateway
+
+  gateway:
+    build: ./backend
+    container_name: gateway
+    ports:
+      - "8000:8000"
+    environment:
+      - TRAJECTORY_API_URL=http://trajectory_service:8080
+      - ANALYSIS_API_URL=http://save_image_service:9000
+    depends_on:
+      - trajectory_service
+      - save_image_service
+    restart: unless-stopped
+
+  trajectory_service:
+    build: ./trajectory_service
+    container_name: trajectory_service
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  save_image_service:
+    build: ./save_image_service
+    container_name: save_image_service
+    expose:
+      - "9000"
+    env_file:
+      - ./save_image_service/.env
+    environment:
+      - YC_SA_KEY_FILE=authorized_key-5.json
+    volumes:
+      - ./etc/secrets/authorized_key-5.json:/etc/secrets/authorized_key-5.json:ro
+    restart: unless-stopped
